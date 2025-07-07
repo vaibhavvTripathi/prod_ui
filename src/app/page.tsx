@@ -1,23 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Code, Eye } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { useStreamChat } from "@/hooks/useStreamChat";
+import { parseCodexityCodeBlock } from "@/helper/parser";
 
 const Index = () => {
   const router = useRouter();
   const [prompt, setPrompt] = useState("");
 
-  const placeholders = [
-    "Build a React todo app with TypeScript...",
-    "Create a landing page with animations...",
-    "Build a weather app with API integration...",
-    "Create a portfolio website...",
-    "Build a chat application...",
-    "Create a dashboard with charts...",
-    "Build an e-commerce product page...",
-    "Create a blog with markdown support...",
-  ];
-
+  const placeholders = ["Build a React todo app with TypeScript..."];
+  const { response, sendMessage } = useStreamChat();
+  useEffect(() => {
+    sendMessage("create any app you like and in this response please include all codexity steps (codexity-write codexity-rename codexity-add dependency)");
+  }, [sendMessage]);
+  console.log(parseCodexityCodeBlock(response));
   const handleBuild = () => {
     if (prompt.trim()) {
       router.push(`/builder?prompt=${encodeURIComponent(prompt.trim())}`);
@@ -74,31 +71,6 @@ const Index = () => {
             </p>
           </div>
         </div>
-
-        <div className="grid md:grid-cols-2 gap-6 mb-12 max-w-3xl mx-auto">
-          <div className="bg-card border border-border rounded-lg p-6 text-left">
-            <div className="flex items-center mb-4">
-              <Code className="w-6 h-6 text-primary mr-3" />
-              <h3 className="text-lg font-semibold">Code Editor</h3>
-            </div>
-            <p className="text-muted-foreground">
-              Advanced code editor with syntax highlighting, file tree
-              navigation, and tab management.
-            </p>
-          </div>
-
-          <div className="bg-card border border-border rounded-lg p-6 text-left">
-            <div className="flex items-center mb-4">
-              <Eye className="w-6 h-6 text-primary mr-3" />
-              <h3 className="text-lg font-semibold">Live Preview</h3>
-            </div>
-            <p className="text-muted-foreground">
-              Real-time preview of your application with hot reload and instant
-              feedback.
-            </p>
-          </div>
-        </div>
-
         <div className="mt-8 text-sm text-muted-foreground">
           <p>
             Powered by WebContainer technology for seamless development
