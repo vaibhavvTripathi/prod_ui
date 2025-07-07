@@ -11,7 +11,6 @@ console.log("hello");
 </codexity-write>
 `;
     const result = parseCodexityCodeBlock(input);
-    console.log("test 1 output", result);
     expect(result[0]?.type).toEqual("CreateOrUpdateFile");
     expect(result[0]?.filePath).toEqual("src/index.ts");
   });
@@ -19,7 +18,6 @@ console.log("hello");
   it("parses a <codexity-rename> block", () => {
     const input = `<codexity-rename original_file_path="src/a.ts" new_file_path="src/b.ts" />`;
     const result = parseCodexityCodeBlock(input);
-    console.log("rename block failed test", result);
     expect(result).toEqual([
       {
         type: StepType.RenameFile,
@@ -43,7 +41,6 @@ console.log("hello");
   it("parses a <codexity-add-dependency> block", () => {
     const input = `<codexity-add-dependency>uuid@1.2</codexity-add-dependency>`;
     const result = parseCodexityCodeBlock(input);
-    console.log("dependecy block", result);
     expect(result).toEqual([
       {
         type: StepType.AddDependency,
@@ -65,7 +62,6 @@ Let's rename src/types/note_temp.ts to src/types/note.ts.
 <codexity-rename original_file_path="src/types/note_temp.ts" new_file_path="src/types/note.ts" />
 `;
     const result = parseCodexityCodeBlock(input);
-    console.log("final results-------", result);
     expect(result).toEqual([
       {
         type: StepType.CreateOrUpdateFile,
@@ -104,7 +100,6 @@ console.log("one");
 
 `;
     const result = parseCodexityCodeBlock(input);
-    console.log("final results", result);
     expect(result).toEqual([
       {
         type: StepType.RenameFile,
@@ -132,7 +127,6 @@ console.log("one");
 
 `;
     const result = parseCodexityCodeBlock(input);
-    console.log("final results", result);
     expect(result).toEqual([
       {
         type: StepType.RenameFile,
