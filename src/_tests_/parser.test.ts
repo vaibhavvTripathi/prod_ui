@@ -1,9 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { parseCodexityCodeBlock, StepType } from "@/helper/parser";
+import { parseCodexityCodeBlock } from "@/helper/parser";
+import { StepType } from "@/types/steps";
 
 describe("parseCodexity", () => {
   it("parses a <codexity-write> block", () => {
     const input = `
+    Some gibberesh
 <codexity-write file_path="src/index.ts">
 console.log("hello");
 </codexity-write>
@@ -59,9 +61,11 @@ console.log("hello");
 <codexity-write file_path="src/one.ts">
 console.log("one");
 </codexity-write>
+Let's rename src/types/note_temp.ts to src/types/note.ts.
+<codexity-rename original_file_path="src/types/note_temp.ts" new_file_path="src/types/note.ts" />
 `;
     const result = parseCodexityCodeBlock(input);
-    console.log("final results", result);
+    console.log("final results-------", result);
     expect(result).toEqual([
       {
         type: StepType.CreateOrUpdateFile,
@@ -72,6 +76,11 @@ console.log("one");
         type: StepType.RenameFile,
         filePath: "src/temp.ts",
         newPath: "src/final.ts",
+      },
+      {
+        type: StepType.RenameFile,
+        filePath: "src/types/note_temp.ts",
+        newPath: "src/types/note.ts",
       },
       {
         type: StepType.DeleteFile,
