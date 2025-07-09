@@ -9,3 +9,4 @@ export function useTemplateQuery() {
     staleTime: 60 * 1000, // 1 minute
   });
 } 
+

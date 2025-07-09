@@ -1,10 +1,13 @@
 // hooks/useStreamChat.ts
 import { streamChat } from "@/api_client/AIClient";
-import { useState, useCallback } from "react";
+import { parseCodexityCodeBlock } from "@/helper/parser";
+import { useFileSystemWithTemplate } from "@/store/fileSystemStore";
+import { useState, useCallback, useEffect } from "react";
 
 export const useStreamChat = () => {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+  const { applySteps } = useFileSystemWithTemplate();
   const sendMessage = useCallback(async (msg: string) => {
     setResponse("");
     setLoading(true);
@@ -16,6 +19,10 @@ export const useStreamChat = () => {
       setLoading(false);
     }
   }, []);
+  useEffect(() => {
+    const steps = parseCodexityCodeBlock(response);
+    applySteps(steps);
+  }, [applySteps, response]);
 
   return { response, loading, sendMessage };
 };

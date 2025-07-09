@@ -1,6 +1,7 @@
 import axios from "axios";
 import { config } from "@/lib/config";
 import { FileItem } from "@/types/file";
+import { CredentialResponse } from "@react-oauth/google";
 
 export async function fetchTemplate(): Promise<FileItem[]> {
   const res = await axios.get<FileItem[]>(`${config.baseUrl}/template`);
@@ -39,3 +40,11 @@ export const streamChat = async (
 
   await read();
 };
+
+export async function verifyGoogleLogin(credential: CredentialResponse) {
+  const res = await axios.post(
+    "http://localhost:6969/api/v0.1/auth/verify-google",
+    credential
+  );
+  return res.data; // { token: string }
+}
