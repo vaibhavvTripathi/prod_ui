@@ -2,6 +2,7 @@ import axios from "axios";
 import { config } from "@/lib/config";
 import { FileItem } from "@/types/file";
 import { CredentialResponse } from "@react-oauth/google";
+import { User } from "@/types/user";
 
 export async function fetchTemplate(): Promise<FileItem[]> {
   const res = await axios.get<FileItem[]>(`${config.baseUrl}/template`);
@@ -47,4 +48,26 @@ export async function verifyGoogleLogin(credential: CredentialResponse) {
     credential
   );
   return res.data; // { token: string }
+}
+
+export async function getUser(token: string): Promise<User> {
+  const res = await axios.get("http://localhost:6969/api/v0.1/auth/me", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data as User;
+}
+
+export async function upsertPrompt(prompt: string, token: string) {
+  const res = await axios.post(
+    "http://localhost:6969/api/v0.1/prompt/",
+    { prompt },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
 }
