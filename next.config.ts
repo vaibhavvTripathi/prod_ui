@@ -3,8 +3,18 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async headers() {
     return [
+      // For WebContainer routes
       {
-        source: "/(.*)",
+        source: "/login/(.*)",
+        headers: [
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin-allow-popups",
+          },
+        ],
+      },
+      {
+        source: "/((?!login).*)",
         headers: [
           {
             key: "Cross-Origin-Embedder-Policy",
@@ -12,10 +22,11 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Cross-Origin-Opener-Policy",
-            value: "same-origin-allow-popups",
+            value: "same-origdin",
           },
         ],
       },
+      // For Google login and popup communication
     ];
   },
 };

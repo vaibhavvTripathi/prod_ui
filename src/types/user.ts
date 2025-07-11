@@ -5,3 +5,4 @@ export interface User {
     lastname: string;
     imageUrl?: string | null;  
   }
+

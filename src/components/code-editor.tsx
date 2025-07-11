@@ -103,7 +103,12 @@ const FileTreeItem: React.FC<FileTreeItemProps> = ({
   );
 };
 
-const CodeEditor: React.FC<CodeEditorProps> = ({ files, className, height, width }) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({
+  files,
+  className,
+  height,
+  width,
+}) => {
   const [selectedFile, setSelectedFile] = useState<FileItem | null>(null);
   const [openTabs, setOpenTabs] = useState<FileItem[]>([]);
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
@@ -174,7 +179,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ files, className, height, width
       )}
       style={{
         height: height || "100vh",
-        width: width || "100%"
+        width: width || "100%",
       }}
     >
       {/* Sidebar */}
@@ -203,9 +208,12 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ files, className, height, width
       <main className="flex-1 flex flex-col relative bg-background p-0 dark:bg-background">
         {/* Tabs */}
         {openTabs.length > 0 && (
-          <div className="border-b border-border bg-popover dark:bg-popover overflow-x-auto">
-            <div className="flex min-w-full">
-              {openTabs.map((tab) => (
+          <div
+            className="border-b border-border bg-popover dark:bg-popover overflow-x-auto"
+            style={{ width: "100%", maxWidth: 770, scrollbarWidth: "none" }}
+          >
+            <div className="flex whitespace-nowrap">
+              {[...openTabs].reverse().map((tab) => (
                 <div
                   key={tab.path}
                   className={cn(
@@ -243,7 +251,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ files, className, height, width
               theme="vs-dark"
               options={{
                 readOnly: true,
-                minimap: { enabled: false },
+                minimap: { enabled: true },
                 fontSize: 15,
                 fontFamily:
                   'JetBrains Mono, Monaco, Menlo, "Ubuntu Mono", monospace',

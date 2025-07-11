@@ -197,8 +197,8 @@ const useFileSystemStore = create<FileSystemState>((set) => ({
 }));
 
 // Custom hook to load initial data from useTemplateQuery and set in Zustand
-export function useFileSystemWithTemplate() {
-  const { data, isLoading, error } = useTemplateQuery();
+export function useFileSystemWithTemplate(promptId : number) {
+  const { data, isLoading, error } = useTemplateQuery(promptId);
   const setFileTree = useFileSystemStore((state) => state.setFileTree);
 
   useEffect(() => {

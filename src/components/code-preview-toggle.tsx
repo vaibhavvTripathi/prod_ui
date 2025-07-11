@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { Code, Eye } from "lucide-react";
 import { useCodePreviewSetup } from "@/hooks/useCodePreviewSetup";
 import CodeEditor from "@/components/code-editor";
@@ -14,21 +15,30 @@ interface CodePreviewToggleProps {
 
 type ViewMode = "code" | "preview";
 
-export function CodePreviewToggle({ 
-  height, 
-  width, 
+export function CodePreviewToggle({
+  height,
+  width,
   className,
 }: CodePreviewToggleProps) {
   const [viewMode, setViewMode] = useState<ViewMode>("code");
+  const [hasMounted, setHasMounted] = useState(false);
   const {
     files,
     webContainer,
     isReady,
     isLoading: isLoadingCodePreview,
     error: codeError,
-  } = useCodePreviewSetup();
+  } = useCodePreviewSetup(1);
   const { url, isLoading, error } = useWebcontainerUrl(webContainer);
-  
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
+
   const toggleViewMode = () => {
     setViewMode((prev) => (prev === "code" ? "preview" : "code"));
   };
@@ -76,7 +86,7 @@ export function CodePreviewToggle({
         </button>
       </div>
 
-            {/* Content area */}
+      {/* Content area */}
       <div className="flex-1 overflow-hidden">
         {isLoadingCodePreview ? (
           <div className="flex items-center justify-center h-full">
@@ -96,10 +106,10 @@ export function CodePreviewToggle({
           </div>
         ) : viewMode === "code" ? (
           files ? (
-            <CodeEditor 
-              files={files} 
-              height="100%" 
-              width="100%" 
+            <CodeEditor
+              files={files}
+              height="100%"
+              width="100%"
               className="border-0 rounded-none"
             />
           ) : (
